@@ -1,0 +1,51 @@
+<template>
+
+    <!-- <lightning-combobox name="progress" label="Status" value="" options={options} onchange={handleChange}></lightning-combobox> -->
+<div>
+    <lightning-layout vertical-align="center" class="x-large">
+        <lightning-layout-item flexibility="auto" padding="around-small">
+            <div class="custom-box">
+                <p> 총</p>
+
+                <p class="font"> 100</p>
+
+
+
+            </div>
+        </lightning-layout-item>
+        <lightning-layout-item flexibility="auto" padding="around-small" onclick= {boxClick}>
+            <div class="custom-box">
+                <p>접수대기</p>
+
+                <p class="font"> 5</p>
+            
+            </div>
+        </lightning-layout-item>
+        <lightning-layout-item flexibility="auto" padding="around-small">
+            <div class="custom-box">
+                <p>처리</p>
+                <p class="font"> 95</p>
+
+            </div>
+        </lightning-layout-item>
+        <lightning-layout-item flexibility="auto" padding="around-small">
+            <div class="custom-box">
+               <!-- <p>문의</p>
+                <p class="font"> 100</p> -->
+                <lightning-record-form
+                    object-api-name={objectApiName}
+                    fields = {fields}
+                    onsuccess = {handleSuccess}
+                >
+                   
+                </lightning-record-form>
+
+            </div>
+        </lightning-layout-item>
+    </lightning-layout>
+</div>
+
+
+
+
+</template>

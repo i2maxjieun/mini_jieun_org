@@ -1,0 +1,24 @@
+.c-container {
+    border: 1px solid #d8dde6;
+    margin: 10px 0 20px 0;
+}
+ .large {
+    height: 600px;
+}
+ .x-large {
+    height: 400px;
+}
+ .custom-box {
+
+    text-align: center;
+    padding: 1rem;
+    background-color: #f4f6f9;
+    border: 4px solid #010712;
+    width:450px;
+    height: 250px;
+}
+.font {
+    font-size: 7em;
+    font-weight: bold;
+    color: blue;
+}

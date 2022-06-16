@@ -1,0 +1,176 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Flow xmlns="http://soap.sforce.com/2006/04/metadata">
+    <actionCalls>
+        <name>Email_To_Converted_Lead</name>
+        <label>Email_To_Converted_Lead</label>
+        <locationX>440</locationX>
+        <locationY>455</locationY>
+        <actionName>emailSimple</actionName>
+        <actionType>emailSimple</actionType>
+        <connector>
+            <targetReference>postChatter_Lead_Status</targetReference>
+        </connector>
+        <flowTransactionModel>CurrentTransaction</flowTransactionModel>
+        <inputParameters>
+            <name>emailBody</name>
+            <value>
+                <elementReference>textT_EmailToConvertedLead</elementReference>
+            </value>
+        </inputParameters>
+        <inputParameters>
+            <name>emailAddresses</name>
+            <value>
+                <elementReference>$Record.Email</elementReference>
+            </value>
+        </inputParameters>
+        <inputParameters>
+            <name>sendRichBody</name>
+            <value>
+                <booleanValue>true</booleanValue>
+            </value>
+        </inputParameters>
+        <inputParameters>
+            <name>emailSubject</name>
+            <value>
+                <stringValue>{!$Record.Company} 님 안녕하세요 .</stringValue>
+            </value>
+        </inputParameters>
+    </actionCalls>
+    <actionCalls>
+        <name>postChatter_Lead_Status</name>
+        <label>postChatter:&lt;Lead&gt;Status</label>
+        <locationX>176</locationX>
+        <locationY>671</locationY>
+        <actionName>chatterPost</actionName>
+        <actionType>chatterPost</actionType>
+        <flowTransactionModel>CurrentTransaction</flowTransactionModel>
+        <inputParameters>
+            <name>text</name>
+            <value>
+                <elementReference>testT_PostChatter_leadStatus</elementReference>
+            </value>
+        </inputParameters>
+        <inputParameters>
+            <name>subjectNameOrId</name>
+            <value>
+                <elementReference>$Record.Id</elementReference>
+            </value>
+        </inputParameters>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </actionCalls>
+    <apiVersion>54.0</apiVersion>
+    <decisions>
+        <name>Lead_Status</name>
+        <label>Lead Status</label>
+        <locationX>176</locationX>
+        <locationY>335</locationY>
+        <defaultConnector>
+            <targetReference>Email_To_Converted_Lead</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>Closed_Converted</defaultConnectorLabel>
+        <rules>
+            <name>Open</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>$Record.Status</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>Open - Not Contacted</stringValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>postChatter_Lead_Status</targetReference>
+            </connector>
+            <label>Open</label>
+        </rules>
+        <rules>
+            <name>Working</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>$Record.Status</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>Working - Contacted</stringValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>postChatter_Lead_Status</targetReference>
+            </connector>
+            <label>Working</label>
+        </rules>
+        <rules>
+            <name>Closed_NotConverted</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>$Record.Status</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>Closed - Not Converted</stringValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>postChatter_Lead_Status</targetReference>
+            </connector>
+            <label>Closed_NotConverted</label>
+        </rules>
+    </decisions>
+    <description>&lt;Error&gt; 리드  Open 생성시에, 이메일이 2번 보내짐.
+Converted일때 이메일 송신 확인 완료.
+상태에 따라 chatter등록 완료 .
+상태가 바뀔 시에만 flow 동작</description>
+    <interviewLabel>Record Triggerd Flow 3: &lt;Lead&gt; {!$Flow.CurrentDateTime}</interviewLabel>
+    <label>Record Triggerd Flow 3: &lt;Lead&gt;</label>
+    <processMetadataValues>
+        <name>BuilderType</name>
+        <value>
+            <stringValue>LightningFlowBuilder</stringValue>
+        </value>
+    </processMetadataValues>
+    <processMetadataValues>
+        <name>CanvasMode</name>
+        <value>
+            <stringValue>AUTO_LAYOUT_CANVAS</stringValue>
+        </value>
+    </processMetadataValues>
+    <processMetadataValues>
+        <name>OriginBuilderType</name>
+        <value>
+            <stringValue>LightningFlowBuilder</stringValue>
+        </value>
+    </processMetadataValues>
+    <processType>AutoLaunchedFlow</processType>
+    <start>
+        <locationX>50</locationX>
+        <locationY>0</locationY>
+        <connector>
+            <targetReference>Lead_Status</targetReference>
+        </connector>
+        <filterLogic>or</filterLogic>
+        <filters>
+            <field>Status</field>
+            <operator>IsChanged</operator>
+            <value>
+                <booleanValue>true</booleanValue>
+            </value>
+        </filters>
+        <object>Lead</object>
+        <recordTriggerType>CreateAndUpdate</recordTriggerType>
+        <triggerType>RecordAfterSave</triggerType>
+    </start>
+    <status>Draft</status>
+    <textTemplates>
+        <name>testT_PostChatter_leadStatus</name>
+        <isViewedAsPlainText>true</isViewedAsPlainText>
+        <text>{!$Record.Status} 로 업데이트 됨</text>
+    </textTemplates>
+    <textTemplates>
+        <name>textT_EmailToConvertedLead</name>
+        <isViewedAsPlainText>false</isViewedAsPlainText>
+        <text>&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot;font-size: 24px; background-color: var(--lwc-colorBackgroundInput,rgb(255, 255, 255)); color: var(--lwc-colorTextWeak,rgb(68, 68, 68)); font-family: var(--lwc-fontFamily,-apple-system, BlinkMacSystemFont, &amp;quot;Segoe UI&amp;quot;, Roboto, Helvetica, Arial, sans-serif, &amp;quot;Apple Color Emoji&amp;quot;, &amp;quot;Segoe UI Emoji&amp;quot;, &amp;quot;Segoe UI Symbol&amp;quot;);&quot;&gt;{!$Record.Company}  회원님, &lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot;font-size: var(--lwc-fontSize3,0.8125rem); background-color: var(--lwc-colorBackgroundInput,rgb(255, 255, 255)); color: var(--lwc-colorTextWeak,rgb(68, 68, 68)); font-family: var(--lwc-fontFamily,-apple-system, BlinkMacSystemFont, &amp;quot;Segoe UI&amp;quot;, Roboto, Helvetica, Arial, sans-serif, &amp;quot;Apple Color Emoji&amp;quot;, &amp;quot;Segoe UI Emoji&amp;quot;, &amp;quot;Segoe UI Symbol&amp;quot;);&quot;&gt;환영합니다,&lt;/span&gt;&lt;/p&gt;&lt;p&gt;감사합니다.&lt;/p&gt;</text>
+    </textTemplates>
+    <textTemplates>
+        <name>textT_EmailToOpenLead</name>
+        <isViewedAsPlainText>false</isViewedAsPlainText>
+        <text>&lt;p&gt;&lt;span style=&quot;font-size: 48px;&quot;&gt;Dear, {!$Record.LastName} 님, &lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot;font-size: 14px;&quot;&gt;환영합니다. &lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;</text>
+    </textTemplates>
+</Flow>

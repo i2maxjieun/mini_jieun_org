@@ -1,0 +1,172 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Flow xmlns="http://soap.sforce.com/2006/04/metadata">
+    <apiVersion>54.0</apiVersion>
+    <decisions>
+        <name>Check_Manager_0</name>
+        <label>Check Manager</label>
+        <locationX>182</locationX>
+        <locationY>431</locationY>
+        <defaultConnector>
+            <targetReference>Update_to_Working_Status_0_0</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>Yes Manager</defaultConnectorLabel>
+        <rules>
+            <name>No_Manager_0</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>$Record.Manager__c</leftValueReference>
+                <operator>IsNull</operator>
+                <rightValue>
+                    <booleanValue>true</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Update_to_New_Status_0</targetReference>
+            </connector>
+            <label>No Manager</label>
+        </rules>
+    </decisions>
+    <decisions>
+        <name>Check_Manager_0_0</name>
+        <label>Check Manager</label>
+        <locationX>710</locationX>
+        <locationY>431</locationY>
+        <defaultConnector>
+            <targetReference>Update_to_Working_Status_0_0_0</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>Yes Manager</defaultConnectorLabel>
+        <rules>
+            <name>No_Manager_0_0</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>$Record.Manager__c</leftValueReference>
+                <operator>IsNull</operator>
+                <rightValue>
+                    <booleanValue>true</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Update_to_New_Status_0_0</targetReference>
+            </connector>
+            <label>No Manager</label>
+        </rules>
+    </decisions>
+    <decisions>
+        <name>Check_New_or_Updated</name>
+        <label>Check New or Updated</label>
+        <locationX>446</locationX>
+        <locationY>311</locationY>
+        <defaultConnector>
+            <targetReference>Check_Manager_0_0</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>Not New Record</defaultConnectorLabel>
+        <rules>
+            <name>is_New_Record</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>IsNew</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <booleanValue>true</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Check_Manager_0</targetReference>
+            </connector>
+            <label>is New Record</label>
+        </rules>
+    </decisions>
+    <formulas>
+        <name>IsNew</name>
+        <dataType>Boolean</dataType>
+        <expression>ISNEW()</expression>
+    </formulas>
+    <interviewLabel>Record Triggerd Flow:&lt;Lead&gt; &lt;Update Status &gt; {!$Flow.CurrentDateTime}</interviewLabel>
+    <label>Record Triggerd Flow:&lt;Lead&gt; &lt;Update Status &gt;</label>
+    <processMetadataValues>
+        <name>BuilderType</name>
+        <value>
+            <stringValue>LightningFlowBuilder</stringValue>
+        </value>
+    </processMetadataValues>
+    <processMetadataValues>
+        <name>CanvasMode</name>
+        <value>
+            <stringValue>AUTO_LAYOUT_CANVAS</stringValue>
+        </value>
+    </processMetadataValues>
+    <processMetadataValues>
+        <name>OriginBuilderType</name>
+        <value>
+            <stringValue>LightningFlowBuilder</stringValue>
+        </value>
+    </processMetadataValues>
+    <processType>AutoLaunchedFlow</processType>
+    <recordUpdates>
+        <description>매니저가 할당되지 않으면, 케이스 상태를 new 로 업데이트 한다.</description>
+        <name>Update_to_New_Status_0</name>
+        <label>Update to New Status</label>
+        <locationX>50</locationX>
+        <locationY>551</locationY>
+        <inputAssignments>
+            <field>Status</field>
+            <value>
+                <stringValue>New</stringValue>
+            </value>
+        </inputAssignments>
+        <inputReference>$Record</inputReference>
+    </recordUpdates>
+    <recordUpdates>
+        <description>매니저가 할당되지 않으면, 케이스 상태를 new 로 업데이트 한다.</description>
+        <name>Update_to_New_Status_0_0</name>
+        <label>Update to New Status</label>
+        <locationX>578</locationX>
+        <locationY>551</locationY>
+        <inputAssignments>
+            <field>Status</field>
+            <value>
+                <stringValue>New</stringValue>
+            </value>
+        </inputAssignments>
+        <inputReference>$Record</inputReference>
+    </recordUpdates>
+    <recordUpdates>
+        <description>매니저가 할당되면, 케이스 상태를 working로 업데이트 한다.</description>
+        <name>Update_to_Working_Status_0_0</name>
+        <label>Update to Working Status</label>
+        <locationX>314</locationX>
+        <locationY>551</locationY>
+        <inputAssignments>
+            <field>Status</field>
+            <value>
+                <stringValue>Working</stringValue>
+            </value>
+        </inputAssignments>
+        <inputReference>$Record</inputReference>
+    </recordUpdates>
+    <recordUpdates>
+        <description>매니저가 할당되면, 케이스 상태를 working로 업데이트 한다.</description>
+        <name>Update_to_Working_Status_0_0_0</name>
+        <label>Update to Working Status</label>
+        <locationX>842</locationX>
+        <locationY>551</locationY>
+        <inputAssignments>
+            <field>Status</field>
+            <value>
+                <stringValue>Working</stringValue>
+            </value>
+        </inputAssignments>
+        <inputReference>$Record</inputReference>
+    </recordUpdates>
+    <start>
+        <locationX>320</locationX>
+        <locationY>0</locationY>
+        <connector>
+            <targetReference>Check_New_or_Updated</targetReference>
+        </connector>
+        <object>Case</object>
+        <recordTriggerType>CreateAndUpdate</recordTriggerType>
+        <triggerType>RecordBeforeSave</triggerType>
+    </start>
+    <status>Active</status>
+</Flow>
