@@ -12,7 +12,7 @@
         <inputParameters>
             <name>text</name>
             <value>
-                <stringValue>{!$Record.Name} 가 새로 등록되었습니다. </stringValue>
+                <stringValue>메세지 내용 수정 </stringValue>
             </value>
         </inputParameters>
         <inputParameters>
@@ -24,8 +24,9 @@
         <storeOutputAutomatically>true</storeOutputAutomatically>
     </actionCalls>
     <apiVersion>55.0</apiVersion>
+    <description>메세지 내용 수정 했습니다.</description>
     <interviewLabel>Test용 Flow 작성 {!$Flow.CurrentDateTime}</interviewLabel>
-    <label>Test용 Flow 작성</label>
+    <label>Test용 Flow 작성2</label>
     <processMetadataValues>
         <name>BuilderType</name>
         <value>
