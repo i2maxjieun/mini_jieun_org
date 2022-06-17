@@ -26,7 +26,7 @@
     <apiVersion>55.0</apiVersion>
     <description>메세지 내용 수정 했습니다.</description>
     <interviewLabel>Test용 Flow 작성 {!$Flow.CurrentDateTime}</interviewLabel>
-    <label>Test용 Flow 작성4</label>
+    <label>Test용 Flow 작성3</label>
     <processMetadataValues>
         <name>BuilderType</name>
         <value>
