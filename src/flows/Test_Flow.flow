@@ -13,6 +13,7 @@
             <name>text</name>
             <value>
                 <stringValue>클라이언트1 메세지 </stringValue>
+
             </value>
         </inputParameters>
         <inputParameters>
@@ -27,6 +28,7 @@
     <description>클라이언트를 위한 메세지 내용 수정 했습니다.</description>
     <interviewLabel>Test용 Flow 작성 {!$Flow.CurrentDateTime}</interviewLabel>
     <label>Test용 Flow 작성4</label>
+
     <processMetadataValues>
         <name>BuilderType</name>
         <value>
