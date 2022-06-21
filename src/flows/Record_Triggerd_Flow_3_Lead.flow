@@ -3,7 +3,7 @@
     <actionCalls>
         <name>Email_To_Converted_Lead</name>
         <label>Email_To_Converted_Lead</label>
-        <locationX>440</locationX>
+        <locationX>666</locationX>
         <locationY>455</locationY>
         <actionName>emailSimple</actionName>
         <actionType>emailSimple</actionType>
@@ -37,9 +37,45 @@
         </inputParameters>
     </actionCalls>
     <actionCalls>
+        <name>Email_To_Open_Lead</name>
+        <label>Email To Open Lead</label>
+        <locationX>50</locationX>
+        <locationY>455</locationY>
+        <actionName>emailSimple</actionName>
+        <actionType>emailSimple</actionType>
+        <connector>
+            <targetReference>postChatter_Lead_Status</targetReference>
+        </connector>
+        <flowTransactionModel>CurrentTransaction</flowTransactionModel>
+        <inputParameters>
+            <name>emailBody</name>
+            <value>
+                <elementReference>textT_EmailToOpenLead</elementReference>
+            </value>
+        </inputParameters>
+        <inputParameters>
+            <name>emailAddresses</name>
+            <value>
+                <elementReference>$Record.Email</elementReference>
+            </value>
+        </inputParameters>
+        <inputParameters>
+            <name>sendRichBody</name>
+            <value>
+                <booleanValue>true</booleanValue>
+            </value>
+        </inputParameters>
+        <inputParameters>
+            <name>emailSubject</name>
+            <value>
+                <stringValue>Welcome, {!$Record.LastName} 제목을 서버에서 수정</stringValue>
+            </value>
+        </inputParameters>
+    </actionCalls>
+    <actionCalls>
         <name>postChatter_Lead_Status</name>
         <label>postChatter:&lt;Lead&gt;Status</label>
-        <locationX>176</locationX>
+        <locationX>358</locationX>
         <locationY>671</locationY>
         <actionName>chatterPost</actionName>
         <actionType>chatterPost</actionType>
@@ -62,7 +98,7 @@
     <decisions>
         <name>Lead_Status</name>
         <label>Lead Status</label>
-        <locationX>176</locationX>
+        <locationX>358</locationX>
         <locationY>335</locationY>
         <defaultConnector>
             <targetReference>Email_To_Converted_Lead</targetReference>
@@ -79,7 +115,7 @@
                 </rightValue>
             </conditions>
             <connector>
-                <targetReference>postChatter_Lead_Status</targetReference>
+                <targetReference>Email_To_Open_Lead</targetReference>
             </connector>
             <label>Open</label>
         </rules>
@@ -114,10 +150,7 @@
             <label>Closed_NotConverted</label>
         </rules>
     </decisions>
-    <description>&lt;Error&gt; 리드  Open 생성시에, 이메일이 2번 보내짐.
-Converted일때 이메일 송신 확인 완료.
-상태에 따라 chatter등록 완료 .
-상태가 바뀔 시에만 flow 동작</description>
+    <description>이메일 제목 수정</description>
     <interviewLabel>Record Triggerd Flow 3: &lt;Lead&gt; {!$Flow.CurrentDateTime}</interviewLabel>
     <label>Record Triggerd Flow 3: &lt;Lead&gt;</label>
     <processMetadataValues>
@@ -140,12 +173,12 @@ Converted일때 이메일 송신 확인 완료.
     </processMetadataValues>
     <processType>AutoLaunchedFlow</processType>
     <start>
-        <locationX>50</locationX>
+        <locationX>232</locationX>
         <locationY>0</locationY>
         <connector>
             <targetReference>Lead_Status</targetReference>
         </connector>
-        <filterLogic>or</filterLogic>
+        <filterLogic>and</filterLogic>
         <filters>
             <field>Status</field>
             <operator>IsChanged</operator>

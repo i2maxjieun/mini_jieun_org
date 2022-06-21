@@ -62,7 +62,7 @@
         <inputParameters>
             <name>emailSubject</name>
             <value>
-                <stringValue>{!$Record.LastName} 님에게 </stringValue>
+                <stringValue>{!$Record.LastName} 님에게  안녕하세요 </stringValue>
             </value>
         </inputParameters>
     </actionCalls>
@@ -136,6 +136,7 @@
             <label>Working</label>
         </rules>
     </decisions>
+    <description>test retrieve flow from the server</description>
     <interviewLabel>Record Triggered Flow2 : &lt;Lead&gt; &lt;send Email&gt; {!$Flow.CurrentDateTime}</interviewLabel>
     <label>Record Triggered Flow2 : &lt;Lead&gt; &lt;send Email&gt;</label>
     <processMetadataValues>
@@ -175,7 +176,7 @@
         <recordTriggerType>CreateAndUpdate</recordTriggerType>
         <triggerType>RecordAfterSave</triggerType>
     </start>
-    <status>Obsolete</status>
+    <status>Draft</status>
     <textTemplates>
         <description>계약이 체결시 고객에게 보내는 이메일</description>
         <name>textT_EmailBodyToClosed</name>
