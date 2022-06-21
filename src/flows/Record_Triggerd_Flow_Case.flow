@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Flow xmlns="http://soap.sforce.com/2006/04/metadata">
     <actionCalls>
-        <description>test 용</description>
-        <name>Post_Chatter</name>
-        <label>Post Chatter</label>
+        <description>new case는 Chatter에 포스트 됩니다.</description>
+        <name>Case_New_postChatter</name>
+        <label>&lt;Case&gt; New_postChatter</label>
         <locationX>176</locationX>
         <locationY>335</locationY>
         <actionName>chatterPost</actionName>
@@ -12,7 +12,7 @@
         <inputParameters>
             <name>text</name>
             <value>
-                <stringValue>원본 메세지</stringValue>
+                <stringValue>{!$Record.Status} 케이스가 등록되었습니다. </stringValue>
             </value>
         </inputParameters>
         <inputParameters>
@@ -24,9 +24,9 @@
         <storeOutputAutomatically>true</storeOutputAutomatically>
     </actionCalls>
     <apiVersion>55.0</apiVersion>
-    <description>메세지 내용 수정 했습니다.</description>
-    <interviewLabel>Test용 Flow 작성 {!$Flow.CurrentDateTime}</interviewLabel>
-    <label>Test용 Flow 작성3</label>
+    <description>신규 케이스는 chatter에 등록됨</description>
+    <interviewLabel>Record Triggerd Flow&lt;Case&gt;_ {!$Flow.CurrentDateTime}</interviewLabel>
+    <label>Record Triggerd Flow : &lt;Case&gt;&lt;Post Chatter&gt;</label>
     <processMetadataValues>
         <name>BuilderType</name>
         <value>
@@ -50,9 +50,17 @@
         <locationX>50</locationX>
         <locationY>0</locationY>
         <connector>
-            <targetReference>Post_Chatter</targetReference>
+            <targetReference>Case_New_postChatter</targetReference>
         </connector>
-        <object>Account</object>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>Status</field>
+            <operator>EqualTo</operator>
+            <value>
+                <stringValue>New</stringValue>
+            </value>
+        </filters>
+        <object>Case</object>
         <recordTriggerType>Create</recordTriggerType>
         <triggerType>RecordAfterSave</triggerType>
     </start>
